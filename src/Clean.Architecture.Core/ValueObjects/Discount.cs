@@ -22,20 +22,12 @@ public class Discount : ValueObject
 
   internal decimal ApplyOn(decimal totalPrice)
   {
-    var result = totalPrice;
-
-    switch (this.Type)
+    var result = this.Type switch
     {
-      case DiscountType.Value:
-        result = totalPrice -= this.Amount;
-        break;
-      case DiscountType.Percentage:
-        result = ((100 - this.Amount) * totalPrice) / 100;
-        break;
-      default:
-        throw new NotSupportedException("Discount Type not supported");
-    }
-
+      DiscountType.Value => totalPrice -= this.Amount,
+      DiscountType.Percentage => ((100 - this.Amount) * totalPrice) / 100,
+      _ => throw new NotSupportedException("Discount Type not supported"),
+    };
     return result;
   }
 
